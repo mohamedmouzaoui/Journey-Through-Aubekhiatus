@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+
+	<!-- [ Application Settings ] -->
+
+	<app title="Journey Through Aubekhia" packageName="com.joalor64.jta" package="com.joalor64.jta"
+		file="JTA" main="Main" version="0.1.0" company="Joalor64" />
+
+	<app preloader="jta.api.Preloader" if="web" />
+
+	<!-- [ Architecture Settings ] -->
+
+	<architecture exclude="armv7" if="android" />
+
+	<!-- [ Window Settings ] -->
+
+	<!-- All targets -->
+	<window width="1024" height="768" fps="60" background="#000000" hardware="true" vsync="false" />
+
+	<!-- HTML5 -->
+	<window if="html5" resizable="true" />
+
+	<!-- Desktop -->
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" />
+
+	<!-- macOS -->
+	<window if="mac" orientation="auto" fullscreen="false" resizable="true" vsync="false"
+		allow-high-dpi="true" />
+
+	<!-- Mobile -->
+	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0"
+		resizable="false" allow-shaders="true" allow-high-dpi="true" />
+
+	<!-- [ Path Settings ] -->
+
+	<set name="BUILD_DIR" value="export/debug" if="debug" />
+	<set name="BUILD_DIR" value="export/release" unless="debug" />
+
+	<source path="source" />
+
+	<assets path="assets/data" />
+	<assets path="assets/fonts" />
+	<assets path="assets/images" />
+	<assets path="assets/levels" />
+	<assets path="assets/locales" />
+	<assets path="assets/scripts" />
+	<assets path="assets/shaders" />
+
+	<assets path="assets/music" exclude="*.ogg" if="web" />
+	<assets path="assets/music" exclude="*.mp3" unless="web" />
+	<assets path="assets/sounds" exclude="*.ogg" if="web" />
+	<assets path="assets/sounds" exclude="*.mp3" unless="web" />
+	<assets path="assets/videos" exclude="*.ogg" if="web" />
+	<assets path="assets/videos" exclude="*.mp3" unless="web" />
+
+	<assets path="mobile" rename="assets/images/mobile" if="mobile" />
+
+	<assets path="gamemode.ini" if="linux" />
+
+	<define name="NO_REDIRECT_ASSETS_FOLDER" />
+
+	<!-- [ Libraries ] -->
+
+	<haxelib name="flixel" />
+	<haxelib name="flixel-addons" />
+
+	<haxelib name="actuate" />
+	<haxelib name="extension-webm" if="desktop || web" />
+
+	<haxelib name="hscript" />
+	<haxelib name="polymod" />
+	<haxelib name="firetongue" />
+	<haxelib name="hxgamemode" if="linux" />
+	<section if="desktop">
+		<haxelib name="hxdiscord_rpc" />
+		<haxelib name="hxcpp-debug-server" if="debug" />
+	</section>
+	<section if="windows">
+		<haxelib name="hxWindowColorMode" />
+		<haxelib name="sl-windows-api" />
+	</section>
+	<section if="android">
+		<haxelib name="extension-androidtools" />
+		<haxelib name="extension-videoview" />
+	</section>
+
+	<!-- [ Haxe Defines ] -->
+
+	<haxedef name="hscriptPos" />
+
+	<haxedef name="FLX_NO_DEBUG" unless="debug" />
+	<haxedef name="FLX_NO_MOUSE" if="mobile" />
+	<haxedef name="FLX_NO_TOUCH" if="desktop" />
+
+	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
+	<haxedef name="FLX_NO_SOUND_TRAY" />
+	<haxedef name="FLX_NO_HEALTH" />
+
+	<section if="debug" unless="NO_REDIRECT_ASSETS_FOLDER || html5">
+		<haxedef name="REDIRECT_ASSETS_FOLDER" />
+	</section>
+
+	<section if="cpp" unless="html5">
+		<haxedef name="HXCPP_CHECK_POINTER" />
+		<haxedef name="HXCPP_GC_CHECK_POINTER" />
+		<haxedef name="HXCPP_STACK_LINE" />
+		<haxedef name="HXCPP_STACK_TRACE" />
+		<haxedef name="HXCPP_CATCH_SEGV" />
+	</section>
+
+	<section if="polymod">
+		<haxedef name="POLYMOD_DEBUG" value="true" if="debug" />
+		<haxedef name="POLYMOD_SCRIPT_CLASS_EXT" value=".hxc" />
+		<haxedef name="POLYMOD_SCRIPT_LIBRARY" value="scripts" />
+		<haxedef name="POLYMOD_ROOT_PATH" value="scripts/" />
+		<haxedef name="POLYMOD_APPEND_FOLDER" value="_append" />
+		<haxedef name="POLYMOD_MERGE_FOLDER" value="_merge" />
+		<haxedef name="POLYMOD_MOD_METADATA_FILE" value="_polymod_meta.json" />
+		<haxedef name="POLYMOD_MOD_ICON_FILE" value="_polymod_icon.png" />
+	</section>
+
+	<haxedef name="analyzer-optimize" />
+	<haxedef name="no-deprecation-warnings" />
+	<haxedef name="message.reporting" value="pretty" />
+
+	<haxedef name="openfl_enable_handle_error" if="${openfl &ge; 9.4.0}" />
+
+	<!-- [ Undefinitions ] -->
+
+	<undefine name="openfl-disable-handle-error" if="debug" unless="${openfl &ge; 9.4.0}" />
+
+	<!-- [ Haxe Flags ] -->
+
+	<haxeflag name="-dce" value="no" />
+
+	<haxeflag name="--macro" value="include('jta')" />
+	<haxeflag name="--macro"
+		value="include('flixel', true, ['flixel.addons.editors.spine.*', 'flixel.addons.nape.*', 'flixel.addons.tile.FlxRayCastTilemap', 'flixel.system.macros.*'])" />
+	<haxeflag name="--macro" value="nullSafety('jta.registries')" />
+	<haxeflag name="--macro" value="nullSafety('jta.util')" />
+
+	<!-- [ Icons ] -->
+
+	<icon path="icon.png" unless="linux" />
+	<assets path="icon.png" embed="true" if="linux" />
+
+</project>
